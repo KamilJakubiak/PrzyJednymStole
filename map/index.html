@@ -112,7 +112,14 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
   <!-- Location data — add one <script> line here per new file -->
-  <script src="../form/form-data/_manifest.js"></script>
+  <script>
+    const locations = [];
+    function upsertLocation(entry) {
+      const idx = locations.findIndex(l => l.title === entry.title);
+      if (idx !== -1) locations[idx] = entry;
+      else locations.push(entry);
+    }
+  </script>
   <script src="../form/form-data/form-data-20260513-0dac.js"></script>
   <script src="../form/form-data/form-data-20260513-7742.js"></script>
 
