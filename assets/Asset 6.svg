@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 555 255">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #30a533;
+      }
+
+      .cls-2 {
+        letter-spacing: -.07em;
+      }
+
+      .cls-3 {
+        fill: #1e2448;
+      }
+
+      .cls-4 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-5 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-6 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-7 {
+        fill: #fff;
+        stroke: #8f92a4;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-8 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-9 {
+        fill: #fdcd14;
+        font-family: Manrope-ExtraBold, Manrope;
+        font-size: 48px;
+        font-variation-settings: 'wght' 800;
+        font-weight: 700;
+        isolation: isolate;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g id="_04-bow-end-orange-navy" data-name="04-bow-end-orange-navy">
+      <path class="cls-7" d="M127.5,254.5C57.47,254.5.5,197.53.5,127.5S57.47.5,127.5.5h300c70.03,0,127,56.97,127,127s-56.97,127-127,127H127.5Z"/>
+      <path class="cls-3" d="M127.5,236.5c-60.1,0-109-48.9-109-109S67.4,18.5,127.5,18.5h300c60.1,0,109,48.9,109,109s-48.9,109-109,109H127.5Z"/>
+      <path class="cls-1" d="M127.5,27.5h300c55.23,0,100,44.77,100,100s-44.77,100-100,100H127.5c-55.23,0-100-44.77-100-100S72.27,27.5,127.5,27.5Z"/>
+      <text class="cls-9" transform="translate(60.76 142.5)"><tspan class="cls-5" x="0" y="0">#Pr</tspan><tspan class="cls-4" x="90.81" y="0">z</tspan><tspan class="cls-6" x="114.33" y="0">yJed</tspan><tspan class="cls-8" x="218.78" y="0">n</tspan><tspan class="cls-6" x="246.67" y="0">ymS</tspan><tspan class="cls-2" x="345.16" y="0">t</tspan><tspan class="cls-6" x="363.35" y="0">ole</tspan></text>
+    </g>
+  </g>
+</svg>

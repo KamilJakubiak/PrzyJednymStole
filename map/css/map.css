@@ -1,0 +1,486 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Manrope', sans-serif;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Dual-ring focus indicator visible on any background */
+:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px #1e2448;
+}
+
+.leaflet-container:focus,
+.leaflet-tile:focus,
+.leaflet-marker-icon:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+fieldset legend {
+  padding: 0;
+  float: left;
+  width: 100%;
+}
+
+.leaflet-tile-pane { will-change: transform; }
+.leaflet-tile     { image-rendering: auto; }
+
+#map {
+  width: 100%;
+  height: 100vh;
+}
+
+/* ── Bottom bar ─────────────────────────────────────── */
+.bottom-bar {
+  position: fixed;
+  bottom: max(44px, calc(env(safe-area-inset-bottom) + 32px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.bottom-buttons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.zoom-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* ── Filter ─────────────────────────────────────────── */
+.filter-wrapper {
+  position: relative;
+}
+
+.filter-panel {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  width: fit-content;
+  z-index: 1050;
+  pointer-events: none;
+}
+
+.filter-panel.open {
+  grid-template-rows: 1fr;
+  pointer-events: auto;
+}
+
+.filter-panel > .section-filters {
+  background: #1e2448;
+  border: none;
+  overflow: hidden;
+  min-height: 0;
+  width: max-content;
+  max-width: min(260px, calc(100vw - 40px));
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  border-radius: 20px;
+  padding: 12px 16px;
+}
+
+.filter-panel.open > .section-filters {
+  opacity: 1;
+  transition: opacity 0.15s ease 0.08s;
+}
+
+#filter-toggle-btn.open {
+  transform: scale(0.93);
+  filter: brightness(0.78);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+}
+
+.section-filters {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 4px 0 6px;
+}
+
+.section-filters label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.section-filters input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #6b7aad;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+/* ── Buttons: see site/css/buttons.css ──────────────── */
+
+/* ── Attribution ────────────────────────────────────── */
+/* !important overrides Leaflet's own stylesheet */
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+  color: rgba(0, 0, 0, 0.45) !important;
+}
+
+/* ── Markers ────────────────────────────────────────── */
+.custom-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.marker-shape {
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.28));
+  transition: transform 0.15s ease-out, filter 0.18s ease;
+}
+
+.mk-fill {
+  transition: fill 0.2s ease;
+}
+
+.marker-selected {
+  z-index: 9999 !important;
+}
+
+.marker-selected .marker-shape {
+  transform: scale(1.45);
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.38));
+}
+
+.marker-inactive .marker-shape {
+  filter: grayscale(1);
+  opacity: 0.35;
+}
+
+/* ── Popup ──────────────────────────────────────────── */
+.location-popup {
+  position: fixed;
+  width: 244px;
+  background: var(--card-color, #ffffff);
+  color: var(--card-text, #1e2448);
+  border-radius: 22px;
+  border: 4px solid #1e2448;
+  overflow: hidden;
+  box-shadow: 0 0 0 5px #ffffff,
+              0 0 0 7px rgba(143, 146, 164, 0.45),
+              0 8px 28px rgba(8, 12, 35, 0.22);
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: bottom center;
+  transform: scale(0.92);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.location-popup.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.popup-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 165px;
+  flex-shrink: 0;
+}
+
+.popup-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.popup-image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(var(--card-color-rgb, 255,255,255), 0)    0%,
+    rgba(var(--card-color-rgb, 255,255,255), 0)   48%,
+    rgba(var(--card-color-rgb, 255,255,255), 0.25) 62%,
+    rgba(var(--card-color-rgb, 255,255,255), 0.7)  78%,
+    rgba(var(--card-color-rgb, 255,255,255), 1)    91%,
+    rgba(var(--card-color-rgb, 255,255,255), 1)   100%);
+  pointer-events: none;
+}
+
+.popup-body {
+  position: relative;
+  z-index: 1;
+  padding: 20px 20px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.popup-title {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.popup-details {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.6;
+  text-align: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.popup-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  color: var(--card-text, #1e2448);
+}
+
+.popup-label {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 100px;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.popup-directions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: center;
+  color: inherit;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  transition: gap 0.2s ease, transform 0.2s ease;
+}
+
+.popup-directions-arrow {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.popup-directions:hover {
+  transform: scale(1.07);
+}
+
+.popup-directions:hover .popup-directions-arrow {
+  transform: translateX(5px);
+}
+
+/* ── Brand logo ─────────────────────────────────────── */
+.map-brand {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-brand-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-decoration: none;
+}
+
+.map-logo-img {
+  width: 150px;
+  height: auto;
+  display: block;
+  opacity: 0.85;
+}
+
+/* ── Tablet + mobile (≤760px): popup card at ~0.8 scale ── */
+@media (max-width: 760px) {
+  .location-popup {
+    width: 200px;
+  }
+
+  .popup-image-wrap { height: 132px; }
+
+  .popup-body {
+    padding: 16px 16px 21px;
+    gap: 11px;
+  }
+
+  .popup-title   { font-size: 18px; }
+  .popup-details { font-size: 11px; }
+}
+
+/* ── Phone (≤620px): 2-row compact layout ── */
+@media (max-width: 620px) {
+  .bottom-bar {
+    left: 16px;
+    right: 16px;
+    transform: none;
+    bottom: max(44px, calc(env(safe-area-inset-bottom) + 32px));
+  }
+
+  /* Row 1: [Losuj] [Filtruj]  Row 2: [−] [□] [+] */
+  .bottom-buttons {
+    flex-wrap: wrap;
+    column-gap: 8px;
+    row-gap: 14px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #random-btn        { flex: 1; }
+  .filter-wrapper    { flex: 1; }
+  #filter-toggle-btn { width: 100%; }
+
+  /* Push the whole icon group to row 2, Losuj+Filtruj stay on row 1 */
+  .zoom-group { order: 1; display: flex; gap: 8px; align-items: center; }
+
+  #fullscreen-label { display: none; }
+  #fullscreen-btn   { padding: 0; }
+
+  /* Same height as desktop, tappable on mobile */
+  .bar-btn        { height: 48px; }
+  .bar-btn-wide   { font-size: 13px; padding: 0 18px; white-space: nowrap; }
+
+  #zoom-out-btn, #zoom-in-btn, #fullscreen-btn { width: 48px; }
+
+  .filter-panel > .section-filters {
+    padding: 8px 12px;
+    border-radius: 16px;
+  }
+
+  .filter-group-title { font-size: 9px; padding: 2px 0 4px; }
+
+  .section-filters label {
+    font-size: 11.5px;
+    padding: 3px 0;
+    gap: 8px;
+  }
+
+  .section-filters input[type="checkbox"] {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+/* ── Phone (≤600px): smaller popup card, filter & logo ── */
+@media (max-width: 600px) {
+  .location-popup {
+    width: min(190px, calc(100vw - 32px));
+    max-height: calc(100dvh - 120px);
+    overflow-y: auto;
+  }
+
+  .popup-image-wrap {
+    height: 110px;
+  }
+
+  .popup-body {
+    padding: 12px 14px 18px;
+    gap: 9px;
+  }
+
+  .popup-title   { font-size: 16px; }
+  .popup-details { font-size: 10.5px; }
+
+  .filter-panel > .section-filters {
+    padding: 8px 12px;
+    border-radius: 16px;
+  }
+
+  .filter-group-title { font-size: 9px; padding: 2px 0 4px; }
+
+  .section-filters label {
+    font-size: 11.5px;
+    padding: 3px 0;
+    gap: 8px;
+  }
+
+  .section-filters input[type="checkbox"] {
+    width: 13px;
+    height: 13px;
+  }
+
+  .map-logo-img { width: 120px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}

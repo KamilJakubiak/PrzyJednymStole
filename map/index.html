@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interaktywna Mapa — Przy Jednym Stole</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <link rel="stylesheet" href="../site/css/buttons.css"/>
+  <link rel="stylesheet" href="css/map.css"/>
+</head>
+
+<body>
+
+  <!-- ── Map container ─────────────────────────────── -->
+  <div id="map" aria-label="Interaktywna mapa lokalizacji we Wrocławiu" role="application"></div>
+
+  <!-- ── Brand card (top-left): logo + initiative link ── -->
+  <div class="map-brand">
+    <a href="../" target="_parent" class="map-brand-logo" aria-label="Przy Jednym Stole — strona główna">
+      <img src="../assets/Asset 12.svg" class="map-logo-img" alt="#PrzyJednymStole">
+    </a>
+  </div>
+
+  <!-- ── Screen-reader notification area ─────────────── -->
+  <div id="map-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ── Location popup (appears above the clicked marker) ── -->
+  <div id="location-popup" class="location-popup" role="dialog" aria-modal="true" aria-labelledby="popup-title" tabindex="-1">
+    <div class="popup-image-wrap">
+      <img id="popup-image" class="popup-image" src="" alt="" />
+    </div>
+    <div class="popup-body">
+      <div id="popup-title" class="popup-title"></div>
+      <div id="popup-labels" class="popup-labels"></div>
+      <p id="popup-details" class="popup-details"></p>
+      <a id="popup-directions" class="popup-directions" target="_blank" rel="noopener">
+        Nawiguj
+        <svg class="popup-directions-arrow" viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Filter panel (fixed to body so iOS never clips it) ── -->
+  <div class="filter-panel" id="filter-panel">
+    <div id="filter-checkboxes" class="section-filters">
+
+      <fieldset class="filter-group">
+        <legend class="filter-group-title">Dzielnica</legend>
+        <label><input type="checkbox" value="srodmiescie"  data-filter-type="section" checked> Śródmieście</label>
+        <label><input type="checkbox" value="stare_miasto" data-filter-type="section" checked> Stare Miasto</label>
+        <label><input type="checkbox" value="krzyki"       data-filter-type="section" checked> Krzyki</label>
+        <label><input type="checkbox" value="fabryczna"    data-filter-type="section" checked> Fabryczna</label>
+        <label><input type="checkbox" value="psie_pole"    data-filter-type="section" checked> Psie Pole</label>
+      </fieldset>
+
+    </div>
+  </div>
+
+  <!-- ── Bottom control bar ────────────────────────── -->
+  <div class="bottom-bar">
+    <div class="bottom-buttons">
+
+      <!-- Main button: white fill + rainbow glow -->
+      <button id="random-btn" class="bar-btn bar-btn-wide bar-btn-rainbow">
+        <span class="random-content">
+          <svg viewBox="0 0 16 16" fill="none" width="15" height="15" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="13" height="13" rx="3" stroke="currentColor" stroke-width="1.6"/>
+            <circle cx="5" cy="5" r="1.3" fill="currentColor"/>
+            <circle cx="11" cy="5" r="1.3" fill="currentColor"/>
+            <circle cx="8" cy="8" r="1.3" fill="currentColor"/>
+            <circle cx="5" cy="11" r="1.3" fill="currentColor"/>
+            <circle cx="11" cy="11" r="1.3" fill="currentColor"/>
+          </svg>
+          Losuj lokalizację
+        </span>
+      </button>
+
+      <!-- Filter button -->
+      <div class="filter-wrapper">
+        <button id="filter-toggle-btn" class="bar-btn bar-btn-wide" aria-expanded="false" aria-controls="filter-panel">
+          <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+            <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Filtruj
+        </button>
+      </div>
+
+      <!-- Zoom / fullscreen group — always stays together -->
+      <div class="zoom-group">
+        <button id="fullscreen-btn" class="bar-btn bar-btn-wide">
+          <svg id="fullscreen-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15" aria-hidden="true">
+            <path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span id="fullscreen-label">Pełny ekran</span>
+        </button>
+
+        <button id="zoom-out-btn" class="bar-btn" aria-label="Pomniejsz mapę">−</button>
+
+        <button id="zoom-in-btn" class="bar-btn" aria-label="Powiększ mapę">+</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+  <!-- Location data — edit form/form-data/_manifest.js to add new files -->
+  <script src="../form/form-data/_manifest.js"></script>
+
+  <script src="../site/js/nbspify.js"></script>
+  <script src="js/map.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logo Color Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site/css/buttons.css">
+  <link rel="stylesheet" href="css/generator.css">
+</head>
+<body>
+
+<header class="page-header">
+  <img src="../assets/Asset 12.svg" class="page-logo" alt="#PrzyJednymStole">
+</header>
+
+<div class="layout">
+
+  <!-- Preview -->
+  <div class="card card-preview">
+    <span class="section-label">Podgląd</span>
+    <div id="logo"></div>
+  </div>
+
+  <!-- Controls -->
+  <div class="card card-controls">
+
+    <div class="field">
+      <div class="field-header">
+        <label>Ilość</label>
+        <button class="dot-toggle" id="count-random" onclick="onCountRandomToggle()">
+          <span class="dot-toggle-indicator"></span>
+          Losowo
+        </button>
+      </div>
+      <input type="range" min="1" max="6" value="3" id="count-slider"
+             oninput="render()">
+      <div class="slider-ticks">
+        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>Kolory</label>
+      <div class="mode-switch">
+        <button class="mode-btn mode-btn--active" data-colorway="brand" onclick="setColorway(this)">Marki</button>
+        <button class="mode-btn" data-colorway="mono" onclick="setColorway(this)">Mono</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="bar-btn bar-btn-wide bar-btn-rainbow" id="randomize-btn" onclick="randomize()">
+      <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="13" height="13" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+        <circle cx="5.5" cy="5.5" r="1" fill="currentColor"/>
+        <circle cx="10.5" cy="5.5" r="1" fill="currentColor"/>
+        <circle cx="8" cy="8" r="1" fill="currentColor"/>
+        <circle cx="5.5" cy="10.5" r="1" fill="currentColor"/>
+        <circle cx="10.5" cy="10.5" r="1" fill="currentColor"/>
+      </svg>
+      Generuj
+    </button>
+
+    <button class="bar-btn bar-btn-wide" id="download-btn" onclick="downloadSVG()">
+      <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+        <path d="M8 2v8M5 7l3 3 3-3M3 13h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Pobierz SVG
+    </button>
+
+  </div>
+
+</div>
+
+<p class="page-footer">© Kamil Jakubiak</p>
+
+<script src="../site/js/nbspify.js"></script>
+<script src="js/generator.js"></script>
+
+</body>
+</html>

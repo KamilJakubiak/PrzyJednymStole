@@ -1,0 +1,120 @@
+/* ── Shared button system (map + form) ──────────────── */
+
+@property --rng-deg {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes ring-spin {
+  to { --rng-deg: 360deg; }
+}
+
+.bar-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: rgba(255,255,255,0.95);
+  font-size: 22px;
+  font-weight: 300;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex-shrink: 0;
+  background: #1e2448;
+  border: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 3.5px rgba(143,146,164,0.38);
+  transition: filter 0.2s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.bar-btn:hover { transform: scale(1.1); }
+
+.bar-btn.is-pressed {
+  filter: brightness(0.88);
+  transform: scale(0.95);
+  transition: filter 0.08s ease-out, transform 0.08s ease-out;
+}
+
+.bar-btn-wide {
+  width: auto;
+  border-radius: 100px;
+  padding: 0 22px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ── Rainbow hover button ───────────────────────────── */
+/* Ring is a ::after pseudo-element so the button's box model is identical
+   to a plain bar-btn-wide — no border, no box-sizing difference. */
+.bar-btn-rainbow {
+  position: relative;
+  transition: color 0.35s ease, box-shadow 0.35s ease,
+              filter 0.2s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* Always-spinning ring overlay (opacity:0 at rest → no snap-to-0 on hover). */
+.bar-btn-rainbow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: conic-gradient(from var(--rng-deg),
+    #AB539A, #E30615, #F08000, #FDCD14, #30A533, #09B8E3, #027BC2, #AB539A 360deg);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  animation: ring-spin 5s linear infinite;
+  transition: opacity 0.35s ease;
+}
+
+.random-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bar-btn-rainbow:not(.bar-btn-disabled):hover {
+  color: #1e2448;
+  box-shadow: none;
+  background: #ffffff;
+}
+
+.bar-btn-rainbow:not(.bar-btn-disabled):hover::after {
+  opacity: 1;
+}
+
+/* ── No hover scale / no rainbow on touch devices or narrow screens ── */
+@media (max-width: 760px), (hover: none), (pointer: coarse) {
+  .bar-btn:hover { transform: none; }
+
+  .bar-btn-rainbow {
+    animation: none;
+  }
+
+  .bar-btn-rainbow::after {
+    display: none;
+  }
+
+  .bar-btn-rainbow:not(.bar-btn-disabled):hover {
+    color: rgba(255, 255, 255, 0.95);
+    background: #1e2448;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 3.5px rgba(143, 146, 164, 0.38);
+  }
+}
+
+/* ── Disabled state (zoom limits, download min-entries) */
+.bar-btn-disabled,
+.zoom-disabled {
+  transform: scale(0.93);
+  filter: brightness(0.78);
+  cursor: default;
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1), filter 0.2s ease;
+}
