@@ -79,6 +79,8 @@ const openPopup = (location, marker, doPan = true) => {
   });
 
   popup.classList.add('open');
+  popup.style.pointerEvents = 'none';
+  setTimeout(() => { popup.style.pointerEvents = ''; }, 500);
 
   if (doPan) {
     const zoom       = map.getZoom();
