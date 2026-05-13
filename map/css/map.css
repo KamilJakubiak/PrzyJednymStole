@@ -364,78 +364,43 @@ fieldset legend {
   opacity: 0.85;
 }
 
-/* ── Tablet + mobile (≤760px): popup card at ~0.8 scale ── */
+/* ── Tablet + mobile (≤760px): column button layout + scaled popup ── */
 @media (max-width: 760px) {
-  .location-popup {
-    width: 200px;
-  }
+  /* Popup card */
+  .location-popup    { width: 200px; }
+  .popup-image-wrap  { height: 132px; }
+  .popup-body        { padding: 16px 16px 21px; gap: 11px; }
+  .popup-title       { font-size: 18px; }
+  .popup-details     { font-size: 11px; }
 
-  .popup-image-wrap { height: 132px; }
-
-  .popup-body {
-    padding: 16px 16px 21px;
-    gap: 11px;
-  }
-
-  .popup-title   { font-size: 18px; }
-  .popup-details { font-size: 11px; }
-}
-
-/* ── Phone (≤620px): 2-row compact layout ── */
-@media (max-width: 620px) {
+  /* Bottom bar: same width as the 3 icon buttons (3×48px + 2×8px gaps) */
   .bottom-bar {
-    left: 16px;
-    right: 16px;
-    transform: none;
-    bottom: max(44px, calc(env(safe-area-inset-bottom) + 32px));
+    width: 160px;
   }
 
-  /* Row 1: [Losuj] [Filtruj]  Row 2: [−] [□] [+] */
+  /* Stack: [Losuj]  [Filtruj]  [□ − +] — all same width */
   .bottom-buttons {
-    flex-wrap: wrap;
-    column-gap: 8px;
-    row-gap: 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
     width: 100%;
+  }
+
+  #filter-toggle-btn { width: 100%; }
+
+  .zoom-group {
+    display: flex;
     justify-content: center;
+    gap: 8px;
     align-items: center;
   }
 
-  #random-btn        { flex: 1; }
-  .filter-wrapper    { flex: 1; }
-  #filter-toggle-btn { width: 100%; }
-
-  /* Push the whole icon group to row 2, Losuj+Filtruj stay on row 1 */
-  .zoom-group { order: 1; display: flex; gap: 8px; align-items: center; }
-
-  #fullscreen-label { display: none; }
-  #fullscreen-btn   { padding: 0; }
-
-  /* Same height as desktop, tappable on mobile */
-  .bar-btn        { height: 48px; }
-  .bar-btn-wide   { font-size: 13px; padding: 0 18px; white-space: nowrap; }
-
+  #fullscreen-label                            { display: none; }
+  #fullscreen-btn                              { padding: 0; }
   #zoom-out-btn, #zoom-in-btn, #fullscreen-btn { width: 48px; }
-
-  .filter-panel > .section-filters {
-    padding: 8px 12px;
-    border-radius: 16px;
-  }
-
-  .filter-group-title { font-size: 9px; padding: 2px 0 4px; }
-
-  .section-filters label {
-    font-size: 11.5px;
-    padding: 3px 0;
-    gap: 8px;
-  }
-
-  .section-filters input[type="checkbox"] {
-    width: 13px;
-    height: 13px;
-  }
 }
 
-/* ── Phone (≤600px): smaller popup card, filter & logo ── */
+/* ── Phone (≤600px): smaller popup, compact filter panel, smaller logo ── */
 @media (max-width: 600px) {
   .location-popup {
     width: min(190px, calc(100vw - 32px));
@@ -443,35 +408,15 @@ fieldset legend {
     overflow-y: auto;
   }
 
-  .popup-image-wrap {
-    height: 110px;
-  }
+  .popup-image-wrap  { height: 110px; }
+  .popup-body        { padding: 12px 14px 18px; gap: 9px; }
+  .popup-title       { font-size: 16px; }
+  .popup-details     { font-size: 10.5px; }
 
-  .popup-body {
-    padding: 12px 14px 18px;
-    gap: 9px;
-  }
-
-  .popup-title   { font-size: 16px; }
-  .popup-details { font-size: 10.5px; }
-
-  .filter-panel > .section-filters {
-    padding: 8px 12px;
-    border-radius: 16px;
-  }
-
-  .filter-group-title { font-size: 9px; padding: 2px 0 4px; }
-
-  .section-filters label {
-    font-size: 11.5px;
-    padding: 3px 0;
-    gap: 8px;
-  }
-
-  .section-filters input[type="checkbox"] {
-    width: 13px;
-    height: 13px;
-  }
+  .filter-panel > .section-filters { padding: 8px 12px; border-radius: 16px; }
+  .filter-group-title               { font-size: 9px; padding: 2px 0 4px; }
+  .section-filters label            { font-size: 11.5px; padding: 3px 0; gap: 8px; }
+  .section-filters input[type="checkbox"] { width: 13px; height: 13px; }
 
   .map-logo-img { width: 120px; }
 }

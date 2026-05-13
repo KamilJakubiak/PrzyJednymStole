@@ -1,12 +1,7 @@
 // ─── HOW TO ADD A NEW LOCATION ───────────────────────────────────────────────
 // 1. Drop the new form-data-YYYYMMDD-xxxx.js file into this folder (form/form-data/)
-// 2. Add one line to DATA_SOURCES below
+// 2. Add a <script> tag for it in map/index.html  (search for "Location data")
 // ─────────────────────────────────────────────────────────────────────────────
-
-const DATA_SOURCES = [
-  '../form/form-data/form-data-20260513-0dac.js',
-  '../form/form-data/form-data-20260513-7742.js',
-];
 
 const locations = [];
 
