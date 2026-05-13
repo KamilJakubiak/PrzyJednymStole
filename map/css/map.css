@@ -85,7 +85,7 @@ fieldset legend {
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   width: fit-content;
-  z-index: 1050;
+  z-index: 2000;
   pointer-events: none;
 }
 
