@@ -46,7 +46,7 @@ const repositionPopup = () => {
   const ph    = popup.offsetHeight || 0;
   const point = map.latLngToContainerPoint(activeMarker.getLatLng());
   popup.style.left = (point.x - pw / 2) + 'px';
-  popup.style.top  = (point.y - 21 - 10 - ph) + 'px';
+  popup.style.top  = (point.y - 21 + 42 * 0.4 - ph) + 'px';
 };
 
 const openPopup = (location, marker, doPan = true) => {
@@ -86,7 +86,7 @@ const openPopup = (location, marker, doPan = true) => {
     const zoom       = map.getZoom();
     const projected  = map.project(marker.getLatLng(), zoom);
     const ph         = popup.offsetHeight || 350;
-    const panTarget  = map.unproject(projected.add([0, -(ph / 2 + 40)]), zoom);
+    const panTarget  = map.unproject(projected.add([0, -(ph / 2 + 13)]), zoom);
     map.panTo(panTarget, { animate: true, duration: 0.35 });
   }
 
