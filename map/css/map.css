@@ -54,15 +54,19 @@ fieldset legend {
 .bottom-bar {
   position: fixed;
   bottom: max(44px, calc(env(safe-area-inset-bottom) + 32px));
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
   z-index: 2000;
+  pointer-events: none;
 }
 
 .bottom-buttons {
   display: flex;
   gap: 16px;
   align-items: center;
+  pointer-events: auto;
 }
 
 .zoom-group {
@@ -72,15 +76,8 @@ fieldset legend {
 }
 
 /* ── Filter ─────────────────────────────────────────── */
-.filter-wrapper {
-  position: relative;
-}
-
 .filter-panel {
   position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.18s cubic-bezier(0.4, 0, 0.2, 1);
@@ -364,43 +361,50 @@ fieldset legend {
   opacity: 0.85;
 }
 
-/* ── Tablet + mobile (≤760px): column button layout + scaled popup ── */
+/* ── Tablet + mobile (≤760px): compact layout ───────── */
 @media (max-width: 760px) {
-  /* Popup card */
+  /* Popup sizing */
   .location-popup    { width: 200px; }
   .popup-image-wrap  { height: 132px; }
   .popup-body        { padding: 16px 16px 21px; gap: 11px; }
   .popup-title       { font-size: 18px; }
   .popup-details     { font-size: 11px; }
 
-  /* Bottom bar: same width as the 3 icon buttons (3×48px + 2×8px gaps) */
-  .bottom-bar {
-    width: 160px;
+  /* Logo: top-left */
+  .map-brand {
+    left: 16px;
+    transform: none;
   }
 
-  /* Stack: [Losuj]  [Filtruj]  [□ − +] — all same width */
-  .bottom-buttons {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    width: 100%;
+  /* Filter button: float out of bottom bar to top-right.
+     Works because .bottom-bar has no transform (no containing-block side-effect). */
+  #filter-toggle-btn {
+    position: fixed;
+    top: 16px;
+    right: 72px; /* 16px edge + 48px fullscreen + 8px gap */
+    z-index: 1200;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 0;
   }
+  .filter-label { display: none; }
 
-  #filter-toggle-btn { width: 100%; }
-
-  /* Filtruj above Wylosuj so the panel opens upward naturally */
-  .filter-wrapper { order: -1; }
-
-  .zoom-group {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    align-items: center;
+  /* Fullscreen button: float to top-right */
+  #fullscreen-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1200;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 0;
   }
+  #fullscreen-label { display: none; }
 
-  #fullscreen-label                            { display: none; }
-  #fullscreen-btn                              { padding: 0; }
-  #zoom-out-btn, #zoom-in-btn, #fullscreen-btn { width: 48px; }
+  /* Zoom buttons: hidden on mobile */
+  .zoom-group { display: none; }
 }
 
 /* ── Phone (≤600px): smaller popup, compact filter panel, smaller logo ── */

@@ -19,7 +19,7 @@
   <!-- ── Map container ─────────────────────────────── -->
   <div id="map" aria-label="Interaktywna mapa lokalizacji we Wrocławiu" role="application"></div>
 
-  <!-- ── Brand card (top-left): logo + initiative link ── -->
+  <!-- ── Brand card (top-left): logo ─────────────────── -->
   <div class="map-brand">
     <a href="../" target="_parent" class="map-brand-logo" aria-label="Przy Jednym Stole — strona główna">
       <img src="../assets/Asset 12.svg" class="map-logo-img" alt="#PrzyJednymStole">
@@ -67,7 +67,6 @@
   <div class="bottom-bar">
     <div class="bottom-buttons">
 
-      <!-- Main button: white fill + rainbow glow -->
       <button id="random-btn" class="bar-btn bar-btn-wide bar-btn-rainbow">
         <span class="random-content">
           <svg viewBox="0 0 16 16" fill="none" width="15" height="15" aria-hidden="true">
@@ -82,27 +81,22 @@
         </span>
       </button>
 
-      <!-- Filter button -->
-      <div class="filter-wrapper">
-        <button id="filter-toggle-btn" class="bar-btn bar-btn-wide" aria-expanded="false" aria-controls="filter-panel">
-          <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
-            <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-          Filtruj
-        </button>
-      </div>
+      <button id="filter-toggle-btn" class="bar-btn bar-btn-wide" aria-expanded="false" aria-controls="filter-panel">
+        <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true">
+          <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <span class="filter-label">Filtruj</span>
+      </button>
 
-      <!-- Zoom / fullscreen group — always stays together -->
+      <button id="fullscreen-btn" class="bar-btn bar-btn-wide">
+        <svg id="fullscreen-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15" aria-hidden="true">
+          <path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span id="fullscreen-label">Pełny ekran</span>
+      </button>
+
       <div class="zoom-group">
-        <button id="fullscreen-btn" class="bar-btn bar-btn-wide">
-          <svg id="fullscreen-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15" aria-hidden="true">
-            <path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span id="fullscreen-label">Pełny ekran</span>
-        </button>
-
         <button id="zoom-out-btn" class="bar-btn" aria-label="Pomniejsz mapę">−</button>
-
         <button id="zoom-in-btn" class="bar-btn" aria-label="Powiększ mapę">+</button>
       </div>
 

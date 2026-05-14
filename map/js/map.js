@@ -272,10 +272,21 @@ const filterToggleBtn = document.getElementById('filter-toggle-btn');
 
 const positionFilterPanel = () => {
   const r      = filterToggleBtn.getBoundingClientRect();
-  const panelW = filterPanel.offsetWidth || 260;
+  const panelW = filterPanel.offsetWidth || 200;
   const cx     = r.left + r.width / 2;
-  filterPanel.style.bottom    = (window.innerHeight - r.top + 10) + 'px';
+
+  if (r.top > window.innerHeight / 2) {
+    // Button is near the bottom (desktop) — open upward
+    filterPanel.style.bottom = (window.innerHeight - r.top + 10) + 'px';
+    filterPanel.style.top    = '';
+  } else {
+    // Button is near the top (mobile) — open downward
+    filterPanel.style.top    = (r.bottom + 10) + 'px';
+    filterPanel.style.bottom = '';
+  }
+
   filterPanel.style.left      = Math.max(8, Math.min(cx - panelW / 2, window.innerWidth - panelW - 8)) + 'px';
+  filterPanel.style.right     = '';
   filterPanel.style.transform = 'none';
 };
 
