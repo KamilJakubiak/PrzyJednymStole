@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Przy Jednym Stole · Kulinarny Wrocław 2026</title>
+  <link rel="icon" type="image/svg+xml" href="assets/faviconMain.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="landing/css/landing.css" />
+</head>
+<body>
+
+  <nav class="nav" aria-label="Nawigacja">
+    <div class="nav-inner">
+      <div class="nav-links">
+        <a href="#o-kampanii">O kampanii</a>
+        <a href="#mapa">Mapa</a>
+        <a href="#dolacz">Dołącz</a>
+      </div>
+      <a href="#dolacz" class="nav-cta">Dołącz teraz</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div id="hero-logo" class="hero-logo" aria-hidden="true"></div>
+      <p class="hero-eye hero-fade" style="animation-delay:.1s">
+        Kampania kulinarna &middot; Wrocław 2026
+      </p>
+      <h1 class="hero-title hero-fade" style="animation-delay:.22s">Jeden Wrocław,<br>wiele kultur</h1>
+      <p class="hero-sub hero-fade" style="animation-delay:.36s">
+        Wrocław smakuje całym światem. Odkryj restauracje prowadzone przez ludzi z różnych kultur, Twoich sąsiadów.
+      </p>
+      <div class="hero-actions hero-fade" style="animation-delay:.48s">
+        <a href="#mapa" class="btn btn--primary">Odkryj mapę</a>
+        <a href="#o-kampanii" class="btn btn--outline">Dowiedz się więcej</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="stats-bar" id="o-kampanii">
+    <div class="stats-inner">
+      <p class="stats-intro" data-reveal>
+        Wrocław jest jednym z najbardziej różnorodnych miast w Polsce. W każdej dzielnicy znajdziesz restauracje prowadzone przez ludzi z całego świata, którzy wybrali to miasto jako swój dom i wnoszą do niego smaki swoich kultur. PrzyJednymStole pokazuje tę różnorodność i zaprasza do jej odkrywania.
+      </p>
+      <div class="stats-row" data-reveal>
+        <div class="stat">
+          <span class="stat-num">30+</span>
+          <span class="stat-label">Restauracji</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">15+</span>
+          <span class="stat-label">Kuchni świata</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Kontynentów</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section class="section section--dark" id="mapa">
+    <div class="section-inner">
+      <p class="eyebrow eyebrow--light" data-reveal>Mapa restauracji</p>
+      <h2 class="section-h2 section-h2--light" data-reveal>Odkryj kulinarny<br>Wrocław</h2>
+      <p class="section-sub section-sub--light" data-reveal>
+        Filtruj po dzielnicy, kliknij marker i ruszaj w miasto.
+      </p>
+    </div>
+    <div class="map-wrap" id="map-wrap">
+      <button class="map-overlay-btn" id="map-overlay" aria-label="Aktywuj mapę interaktywną">
+        <span>Otwórz mapę</span>
+      </button>
+      <iframe class="map-frame" src="map/" title="Mapa kulinarnego Wrocławia" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <!-- JOIN -->
+  <section class="section section--yellow" id="dolacz">
+    <div class="section-inner">
+      <p class="eyebrow" data-reveal>Jak działać</p>
+      <h2 class="section-h2" data-reveal>Zacznij odkrywać</h2>
+      <div class="steps" data-reveal>
+        <div class="step">
+          <span class="step-num">01</span>
+          <h3>Wyjdź i odkryj</h3>
+          <p>Zabierz znajomych i odwiedź restaurację prowadzoną przez ludzi z innej kultury. Każda dzielnica Wrocławia kryje inne smaki i inne historie.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <h3>Dodaj przez formularz</h3>
+          <p>Znalazłeś coś wyjątkowego? Zgłoś restaurację przez nasz formularz. Pomagasz innym odkryć miejsce, które Ty już znasz.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <h3>Oznacz przy kolejnej wizycie</h3>
+          <p>Wróć i oznacz danie hashtagiem <strong>#PrzyJednymStole</strong>. Każde zdjęcie rozbudowuje kulinarną kronikę Wrocławia i przyspiesza odkrycia innych.</p>
+        </div>
+      </div>
+      <div class="section-cta" data-reveal>
+        <a href="form/" class="btn btn--dark">Zgłoś restaurację</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <img class="footer-logo" src="assets/Asset%2012.svg" alt="Przy Jednym Stole" />
+      <div class="footer-patron">
+        <p class="footer-patron-label">Patron kampanii</p>
+        <img class="footer-patron-img" src="assets/patron-logo.jpg" alt="Wrocław Miasto Równości" />
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Przy Jednym Stole &nbsp;&middot;&nbsp; #PrzyJednymStole</p>
+    </div>
+  </footer>
+
+  <script src="landing/js/logo-gen.js"></script>
+  <script src="landing/js/landing.js"></script>
+</body>
+</html>

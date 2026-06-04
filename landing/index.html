@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Festiwal Smaku 2026 — Przy Jednym Stole</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/landing.css" />
+</head>
+<body>
+
+  <nav class="nav" aria-label="Nawigacja">
+    <div class="nav-inner">
+      <div class="nav-links">
+        <a href="#o-festiwalu">O festiwalu</a>
+        <a href="#mapa">Lokalizacja</a>
+        <a href="#dolacz">Dołącz</a>
+      </div>
+      <a href="#dolacz" class="nav-cta">Zapisz się</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <img
+        class="hero-logo hero-fade"
+        src="../assets/Asset%2012.svg"
+        alt="Przy Jednym Stole"
+        style="animation-delay:.05s"
+      />
+      <p class="hero-eye hero-fade" style="animation-delay:.2s">
+        20 września 2026 &middot; Wrocław
+      </p>
+      <h1 class="hero-title hero-fade" style="animation-delay:.3s">Festiwal<br>Smaku</h1>
+      <p class="hero-sub hero-fade" style="animation-delay:.42s">
+        Jeden dzień. Jedno miasto. Jeden wielki stół.
+      </p>
+      <div class="hero-actions hero-fade" style="animation-delay:.54s">
+        <a href="#dolacz" class="btn btn--primary">Zapisz się</a>
+        <a href="#mapa" class="btn btn--outline">Lokalizacja</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT + STATS -->
+  <section class="stats-bar" id="o-festiwalu">
+    <div class="stats-inner">
+      <p class="stats-intro" data-reveal>
+        Przy Jednym Stole to wspólne gotowanie, rozmowy i smaki, które łączą ludzi ponad podziałami. Jeden dzień, który zamienia miasto w jeden wielki stół.
+      </p>
+      <div class="stats-row" data-reveal>
+        <div class="stat">
+          <span class="stat-num">6</span>
+          <span class="stat-label">Edycji festiwalu</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">3&thinsp;000+</span>
+          <span class="stat-label">Uczestników rocznie</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">40+</span>
+          <span class="stat-label">Kuchni świata</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section class="section section--dark" id="mapa">
+    <div class="section-inner">
+      <p class="eyebrow eyebrow--light" data-reveal>Lokalizacja</p>
+      <h2 class="section-h2 section-h2--light" data-reveal>Gdzie nas<br>znajdziesz</h2>
+      <p class="section-sub section-sub--light" data-reveal>
+        20 września 2026 &middot; godz. 12:00–20:00<br>
+        Centrum Wrocławia — dokładna lokalizacja wkrótce
+      </p>
+    </div>
+    <div class="map-wrap" id="map-wrap">
+      <button class="map-overlay-btn" id="map-overlay" aria-label="Aktywuj mapę interaktywną">
+        <span>Otwórz mapę</span>
+      </button>
+      <iframe class="map-frame" src="../map/" title="Mapa festiwalu" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <!-- JOIN -->
+  <section class="section section--yellow" id="dolacz">
+    <div class="section-inner">
+      <p class="eyebrow" data-reveal>Dołącz do kampanii</p>
+      <h2 class="section-h2" data-reveal>Trzy proste kroki</h2>
+      <div class="steps" data-reveal>
+        <div class="step">
+          <span class="step-num">01</span>
+          <h3>Wypełnij formularz</h3>
+          <p>Zgłoś swój udział przez formularz online — to kwestia dwóch minut.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <h3>Wybierz danie</h3>
+          <p>Powiedz nam, co chcesz przynieść. Może być cokolwiek — ważne, że twoje.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <h3>Przyjdź i jedz</h3>
+          <p>20 września stawiasz danie na wspólnym stole i zostajesz tak długo, jak chcesz.</p>
+        </div>
+      </div>
+      <div class="section-cta" data-reveal>
+        <a href="../form/" class="btn btn--dark">Zapisz się teraz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <img class="footer-logo" src="../assets/Asset%2012.svg" alt="Przy Jednym Stole" />
+      <p class="footer-city">Wrocław</p>
+      <p class="footer-copy">&copy; 2026 Przy Jednym Stole &nbsp;&middot;&nbsp; #PrzyJednymStole</p>
+    </div>
+  </footer>
+
+  <script src="js/landing.js"></script>
+</body>
+</html>

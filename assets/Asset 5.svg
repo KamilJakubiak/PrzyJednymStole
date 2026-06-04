@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 555 255">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: Manrope-ExtraBold, Manrope;
+        font-size: 48px;
+        font-variation-settings: 'wght' 800;
+        font-weight: 700;
+        isolation: isolate;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #1e2448;
+      }
+
+      .cls-3 {
+        fill: #09b8e3;
+      }
+
+      .cls-4 {
+        letter-spacing: -.07em;
+      }
+
+      .cls-5 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-6 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-7 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-8 {
+        fill: #fff;
+        stroke: #8f92a4;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-9 {
+        letter-spacing: -.05em;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g id="_03-octagon-cyan-navy" data-name="03-octagon-cyan-navy">
+      <path class="cls-8" d="M87.5,254.5c-5.35,0-10.53-1.57-14.98-4.54l-60-40c-7.53-5.02-12.02-13.42-12.02-22.47v-120c0-9.05,4.5-17.45,12.02-22.47L72.52,5.03c4.45-2.97,9.63-4.53,14.98-4.53h380c5.35,0,10.53,1.57,14.98,4.54l60,40c7.53,5.02,12.02,13.42,12.02,22.47v120c0,9.05-4.49,17.45-12.02,22.47l-60,40c-4.45,2.97-9.63,4.53-14.98,4.53H87.5Z"/>
+      <path class="cls-2" d="M87.5,236.5c-1.78,0-3.51-.53-4.99-1.51l-60-40c-2.5-1.67-4.01-4.48-4.01-7.49v-120c0-3.01,1.5-5.82,4.01-7.49l60-40c1.48-.99,3.22-1.51,4.99-1.51h380c1.78,0,3.51.53,4.99,1.51l60,40c2.5,1.67,4.01,4.48,4.01,7.49v120c0,3.01-1.5,5.82-4.01,7.49l-60,40c-1.48.99-3.22,1.51-4.99,1.51H87.5Z"/>
+      <path class="cls-3" d="M87.5,27.5h380l60,40v120l-60,40H87.5l-60-40v-120l60-40Z"/>
+      <text class="cls-1" transform="translate(60.76 142.5)"><tspan class="cls-6" x="0" y="0">#Pr</tspan><tspan class="cls-5" x="90.81" y="0">z</tspan><tspan class="cls-7" x="114.33" y="0">yJed</tspan><tspan class="cls-9" x="218.78" y="0">n</tspan><tspan class="cls-7" x="246.67" y="0">ymS</tspan><tspan class="cls-4" x="345.16" y="0">t</tspan><tspan class="cls-7" x="363.35" y="0">ole</tspan></text>
+    </g>
+  </g>
+</svg>
