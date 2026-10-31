@@ -6,17 +6,18 @@ const cityBounds  = L.latLngBounds([50.93, 16.61], [51.27, 17.45]);
 const map = L.map('map', {
   zoomControl: false,
   minZoom: HOME_ZOOM,
+  maxZoom: 18,
   maxBounds: cityBounds,
   maxBoundsViscosity: 1.0,
 }).setView(HOME_COORDS, HOME_ZOOM);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  minZoom: HOME_ZOOM,
-  maxZoom: 18,
-  attribution: '&copy; Kamil Jakubiak &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>',
-  subdomains: 'abcd',
-  updateWhenZooming: false,
-  keepBuffer: 4,
+// Positron style from OpenFreeMap — free, no API key (CARTO basemaps now require one)
+L.maplibreGL({
+  style: 'https://tiles.openfreemap.org/styles/positron',
+  // customAttribution, because the plugin otherwise swaps in the style's own credits on load
+  attributionControl: {
+    customAttribution: '&copy; Kamil Jakubiak &copy; <a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+  },
 }).addTo(map);
 
 // -- DOM refs --
