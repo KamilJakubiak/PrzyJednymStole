@@ -173,6 +173,10 @@ fieldset legend {
   color: rgba(0, 0, 0, 0.45) !important;
 }
 
+.leaflet-attribution-flag {
+  display: none !important;
+}
+
 /* ── Markers ────────────────────────────────────────── */
 .custom-div-icon {
   background: transparent;
