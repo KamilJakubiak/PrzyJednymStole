@@ -20,10 +20,38 @@ const hasWebGL = (() => {
   return !!gl;
 })();
 
-if (hasWebGL) {
+// L.MaplibreGL is missing if the MapLibre scripts failed to load — use the raster fallback then too
+if (hasWebGL && L.MaplibreGL) {
+  // The plugin redraws the whole vector map on every 'move' (every 32 ms while dragging),
+  // which is what stutters on slower devices. Its canvas already overhangs the view by
+  // `padding` and slides along with the map, so only redraw once the view nears that
+  // edge — synchronously, so the moved canvas and its new content land in the same frame.
+  const BufferedMaplibreGL = L.MaplibreGL.extend({
+    _update(e) {
+      if (e?.type === 'move' && !this._zooming && this._drawnAt) {
+        const drift = this._map.containerPointToLayerPoint([0, 0]).subtract(this._drawnAt);
+        const slack = this._map.getSize().multiplyBy(this.options.padding * 0.75);
+        if (Math.abs(drift.x) < slack.x && Math.abs(drift.y) < slack.y) return;
+      }
+      L.MaplibreGL.prototype._update.call(this, e);
+      if (this._zooming) return;
+      this._drawnAt = this._map.containerPointToLayerPoint([0, 0]);
+      if (this._glMap.isStyleLoaded()) this._glMap.redraw();
+    },
+    // The zoom animation assumes the canvas was drawn at the current position
+    _zoomStart(e) {
+      this._update();
+      L.MaplibreGL.prototype._zoomStart.call(this, e);
+    },
+  });
+
   // Positron style from OpenFreeMap — free, no API key (CARTO basemaps now require one)
-  L.maplibreGL({
+  new BufferedMaplibreGL({
     style: 'https://tiles.openfreemap.org/styles/positron',
+    // Phones report up to 3× density; 2× looks the same and is less than half the pixels
+    pixelRatio: Math.min(window.devicePixelRatio, 2),
+    // No label fade-in, which otherwise keeps repainting for 300 ms after every move
+    fadeDuration: 0,
     // customAttribution, because the plugin otherwise swaps in the style's own credits on load
     attributionControl: {
       customAttribution: '&copy; Kamil Jakubiak &copy; <a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',

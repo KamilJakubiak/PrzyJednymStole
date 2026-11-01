@@ -88,6 +88,8 @@
   pointer-events: none;
   opacity: 0;
   animation: ring-spin 5s linear infinite;
+  /* Paused while hidden — it would otherwise repaint every frame the whole time */
+  animation-play-state: paused;
   transition: opacity 0.35s ease;
 }
 
@@ -103,7 +105,7 @@
   background: #ffffff;
 }
 
-.bar-btn-rainbow:not(.bar-btn-disabled):hover::after { opacity: 1; }
+.bar-btn-rainbow:not(.bar-btn-disabled):hover::after { opacity: 1; animation-play-state: running; }
 
 /* ── Disabled ───────────────────────────────────────────────── */
 
