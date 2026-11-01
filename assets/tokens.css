@@ -67,18 +67,25 @@
 
 /* ── Rainbow hover ──────────────────────────────────────────── */
 
+/* Background and text colour fade together — if only one of them animates,
+   the label vanishes (white on white / navy on navy) partway through. The
+   ease-in-out curve rushes through the midpoint where both are the same grey. */
 .bar-btn-rainbow {
   position: relative;
-  transition: color 0.35s ease, box-shadow 0.35s ease,
+  transition: background-color 0.25s cubic-bezier(0.65, 0, 0.35, 1),
+              color 0.25s cubic-bezier(0.65, 0, 0.35, 1),
+              box-shadow 0.25s ease,
               filter 0.2s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* The ring sits exactly on the white/grey outline (box-shadow) it replaces,
+   so the button keeps its size and the outline just lights up. */
 .bar-btn-rainbow::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -3.5px;
   border-radius: inherit;
-  padding: 3px;
+  padding: 3.5px;
   background: conic-gradient(from var(--rng-deg),
     #AB539A, #E30615, #F08000, #FDCD14, #30A533, #09B8E3, #027BC2, #AB539A 360deg);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -88,9 +95,10 @@
   pointer-events: none;
   opacity: 0;
   animation: ring-spin 5s linear infinite;
-  /* Paused while hidden — it would otherwise repaint every frame the whole time */
-  animation-play-state: paused;
-  transition: opacity 0.35s ease;
+  /* display: none while hidden stops the spin, which would otherwise repaint every
+     frame the whole time; allow-discrete keeps it spinning until it has faded out */
+  display: none;
+  transition: opacity 0.3s ease, display 0.3s allow-discrete;
 }
 
 .random-content {
@@ -101,11 +109,20 @@
 
 .bar-btn-rainbow:not(.bar-btn-disabled):hover {
   color: #1e2448;
-  box-shadow: none;
+  /* Same shape as the outline, just transparent, so it fades instead of shrinking */
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0), 0 0 0 3.5px rgba(143, 146, 164, 0);
   background: #ffffff;
 }
 
-.bar-btn-rainbow:not(.bar-btn-disabled):hover::after { opacity: 1; animation-play-state: running; }
+.bar-btn-rainbow:not(.bar-btn-disabled):hover::after {
+  display: block;
+  opacity: 1;
+}
+
+/* Where the fade-in starts from when the ring goes from display: none to shown */
+@starting-style {
+  .bar-btn-rainbow:not(.bar-btn-disabled):hover::after { opacity: 0; }
+}
 
 /* ── Disabled ───────────────────────────────────────────────── */
 
@@ -163,7 +180,8 @@
 @media (max-width: 760px), (hover: none), (pointer: coarse) {
   .bar-btn:hover { transform: none; }
   .bar-btn-rainbow { animation: none; }
-  .bar-btn-rainbow::after { display: none; }
+  .bar-btn-rainbow::after,
+  .bar-btn-rainbow:not(.bar-btn-disabled):hover::after { display: none; }
   .bar-btn-rainbow:not(.bar-btn-disabled):hover {
     color: rgba(255, 255, 255, 0.95);
     background: #1e2448;
