@@ -9,6 +9,8 @@ const map = L.map('map', {
   maxZoom: 18,
   maxBounds: cityBounds,
   maxBoundsViscosity: 1.0,
+  // Tiles fading in keep re-blending for a while after every move — costly without a GPU
+  fadeAnimation: false,
 }).setView(HOME_COORDS, HOME_ZOOM);
 
 // MapLibre needs WebGL (same check it runs itself). Without it — e.g. graphics
@@ -62,12 +64,39 @@ if (hasWebGL && L.MaplibreGL) {
   // Esri only draws up to z16; anything closer is a blurry upscale, so stop there.
   map.setMaxZoom(16);
   const esriGray = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_';
-  const rasterOptions = { updateWhenZooming: false, keepBuffer: 4 };
-  L.tileLayer(esriGray + 'Base/MapServer/tile/{z}/{y}/{x}', {
-    ...rasterOptions,
+  const loadImage = src => new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+
+  // Esri serves the base and the labels separately. Without WebGL the browser usually has
+  // no GPU compositing either, so every frame of a drag or zoom blends each full-screen
+  // layer on the CPU — flatten both into one canvas per tile so there's only one layer.
+  const EsriLightGray = L.GridLayer.extend({
+    createTile(coords, done) {
+      const tile = document.createElement('canvas');
+      const size = this.getTileSize();
+      tile.width = size.x;
+      tile.height = size.y;
+      const path = `/MapServer/tile/${coords.z}/${coords.y}/${coords.x}`;
+      Promise.allSettled([loadImage(esriGray + 'Base' + path), loadImage(esriGray + 'Reference' + path)])
+        .then(([base, labels]) => {
+          const ctx = tile.getContext('2d');
+          if (base.status === 'fulfilled') ctx.drawImage(base.value, 0, 0);
+          if (labels.status === 'fulfilled') ctx.drawImage(labels.value, 0, 0);
+          done(base.status === 'fulfilled' ? null : base.reason, tile);
+        });
+      return tile;
+    },
+  });
+
+  new EsriLightGray({
+    updateWhenZooming: false,
+    keepBuffer: 4,
     attribution: '&copy; Kamil Jakubiak &copy; <a href="https://www.esri.com" target="_blank">Esri</a>, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
   }).addTo(map);
-  L.tileLayer(esriGray + 'Reference/MapServer/tile/{z}/{y}/{x}', rasterOptions).addTo(map);
 }
 
 // -- DOM refs --
