@@ -11,14 +11,33 @@ const map = L.map('map', {
   maxBoundsViscosity: 1.0,
 }).setView(HOME_COORDS, HOME_ZOOM);
 
-// Positron style from OpenFreeMap — free, no API key (CARTO basemaps now require one)
-L.maplibreGL({
-  style: 'https://tiles.openfreemap.org/styles/positron',
-  // customAttribution, because the plugin otherwise swaps in the style's own credits on load
-  attributionControl: {
-    customAttribution: '&copy; Kamil Jakubiak &copy; <a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
-  },
-}).addTo(map);
+// MapLibre needs WebGL (same check it runs itself). Without it — e.g. graphics
+// acceleration turned off in the browser — it throws and nothing below would run.
+const hasWebGL = (() => {
+  const gl = document.createElement('canvas').getContext('webgl2')
+          || document.createElement('canvas').getContext('webgl');
+  gl?.getExtension('WEBGL_lose_context')?.loseContext();
+  return !!gl;
+})();
+
+if (hasWebGL) {
+  // Positron style from OpenFreeMap — free, no API key (CARTO basemaps now require one)
+  L.maplibreGL({
+    style: 'https://tiles.openfreemap.org/styles/positron',
+    // customAttribution, because the plugin otherwise swaps in the style's own credits on load
+    attributionControl: {
+      customAttribution: '&copy; Kamil Jakubiak &copy; <a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+    },
+  }).addTo(map);
+} else {
+  // Fallback: plain OSM raster tiles (no key either), greyed out in map.css to stay close to Positron
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    className: 'basemap-raster',
+    attribution: '&copy; Kamil Jakubiak &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+    updateWhenZooming: false,
+    keepBuffer: 4,
+  }).addTo(map);
+}
 
 // -- DOM refs --
 const popup          = document.getElementById('location-popup');
