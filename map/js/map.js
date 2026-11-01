@@ -30,13 +30,16 @@ if (hasWebGL) {
     },
   }).addTo(map);
 } else {
-  // Fallback: plain OSM raster tiles (no key either), greyed out in map.css to stay close to Positron
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    className: 'basemap-raster',
-    attribution: '&copy; Kamil Jakubiak &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
-    updateWhenZooming: false,
-    keepBuffer: 4,
+  // Fallback: Esri Light Gray Canvas raster tiles (no key either) — closest look to Positron.
+  // Esri only draws up to z16; anything closer is a blurry upscale, so stop there.
+  map.setMaxZoom(16);
+  const esriGray = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_';
+  const rasterOptions = { updateWhenZooming: false, keepBuffer: 4 };
+  L.tileLayer(esriGray + 'Base/MapServer/tile/{z}/{y}/{x}', {
+    ...rasterOptions,
+    attribution: '&copy; Kamil Jakubiak &copy; <a href="https://www.esri.com" target="_blank">Esri</a>, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
   }).addTo(map);
+  L.tileLayer(esriGray + 'Reference/MapServer/tile/{z}/{y}/{x}', rasterOptions).addTo(map);
 }
 
 // -- DOM refs --

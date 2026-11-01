@@ -45,9 +45,6 @@ fieldset legend {
 .leaflet-tile-pane { will-change: transform; }
 .leaflet-tile     { image-rendering: auto; }
 
-/* No-WebGL fallback (see map.js): grey the colourful OSM tiles towards Positron */
-.basemap-raster   { filter: grayscale(1) brightness(1.08) contrast(0.85); }
-
 #map {
   width: 100%;
   height: 100vh;
