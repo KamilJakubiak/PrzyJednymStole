@@ -204,12 +204,15 @@ const openPopup = (location, marker, doPan = true) => {
   popup.focus({ preventScroll: true });
 };
 
-const closePopup = () => {
+// Focus goes back to the marker only when the card is dismissed from the keyboard: Leaflet
+// pans a focused marker into view, which would cut short the move that closed the card
+// (e.g. "Wylosuj" heading elsewhere, leaving the map halfway and no card opened)
+const closePopup = (restoreFocus = false) => {
   popup.classList.remove('open');
   const prevEl = activeMarker?.getElement();
   prevEl?.classList.remove('marker-selected');
   activeMarker = null;
-  setTimeout(() => prevEl?.focus({ preventScroll: true }), 150);
+  if (restoreFocus) setTimeout(() => prevEl?.focus({ preventScroll: true }), 150);
 };
 
 map.on('move',      repositionPopup);
@@ -217,7 +220,7 @@ map.on('dragstart', cancelPendingRandom);
 map.on('zoomstart', () => { if (activeMarker) closePopup(); });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && activeMarker) closePopup();
+  if (e.key === 'Escape' && activeMarker) closePopup(true);
 });
 
 // -- Marker colors & shapes --
