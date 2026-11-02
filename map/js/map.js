@@ -101,11 +101,6 @@ if (hasWebGL && L.MaplibreGL) {
 
 // -- DOM refs --
 const popup          = document.getElementById('location-popup');
-const popupImage     = document.getElementById('popup-image');
-const popupTitle     = document.getElementById('popup-title');
-const popupDetails   = document.getElementById('popup-details');
-const popupLabels    = document.getElementById('popup-labels');
-const popupDirection = document.getElementById('popup-directions');
 const mapStatus      = document.getElementById('map-status');
 const filterPanel    = document.getElementById('filter-panel');
 const filterToggleBtn= document.getElementById('filter-toggle-btn');
@@ -128,34 +123,66 @@ const repositionPopup = () => {
   popup.style.top  = (point.y - 21 + 42 * 0.4 - ph) + 'px';
 };
 
-const openPopup = (location, marker, doPan = true) => {
-  activeMarker?.getElement()?.classList.remove('marker-selected');
-  activeMarker = marker;
-  activeMarker.getElement()?.classList.add('marker-selected');
+// Bumped whenever something else takes over the map, so a "Wylosuj" still in flight
+// doesn't open its card on top — see focusRandomLocation
+let randomToken = 0;
+const cancelPendingRandom = () => { randomToken++; };
 
+// Writes a location into a card: the live popup, or a probe used only to measure it
+const fillPopup = (root, location, marker, withImage = true) => {
   const cardColor = marker.markerColor || '#ffffff';
   const cardText  = MARKER_TEXT[cardColor] || '#1e2448';
   const r = parseInt(cardColor.slice(1, 3), 16);
   const g = parseInt(cardColor.slice(3, 5), 16);
   const b = parseInt(cardColor.slice(5, 7), 16);
-  popup.style.setProperty('--card-color',     cardColor);
-  popup.style.setProperty('--card-color-rgb', `${r},${g},${b}`);
-  popup.style.setProperty('--card-text',      cardText);
+  root.style.setProperty('--card-color',     cardColor);
+  root.style.setProperty('--card-color-rgb', `${r},${g},${b}`);
+  root.style.setProperty('--card-text',      cardText);
 
-  popupImage.src           = location.image;
-  popupImage.alt           = location.title;
-  popupTitle.textContent   = nbspify(location.title);
-  popupDetails.textContent = nbspify(location.details);
-  popupDirection.href      = `https://www.google.com/maps/dir/?api=1&destination=${location.coords[0]},${location.coords[1]}`;
-  popupDirection.setAttribute('aria-label', `Nawiguj do ${location.title}`);
+  if (withImage) {
+    const img = root.querySelector('.popup-image');
+    img.src = location.image;
+    img.alt = location.title;
+  }
+  root.querySelector('.popup-title').textContent   = nbspify(location.title);
+  root.querySelector('.popup-details').textContent = nbspify(location.details);
+  const directions = root.querySelector('.popup-directions');
+  directions.href = `https://www.google.com/maps/dir/?api=1&destination=${location.coords[0]},${location.coords[1]}`;
+  directions.setAttribute('aria-label', `Nawiguj do ${location.title}`);
 
-  popupLabels.innerHTML = '';
+  const labels = root.querySelector('.popup-labels');
+  labels.innerHTML = '';
   (location.labels || []).forEach(label => {
     const span = document.createElement('span');
     span.className   = 'popup-label';
     span.textContent = label;
-    popupLabels.appendChild(span);
+    labels.appendChild(span);
   });
+};
+
+// Height the card will have for this location, measured on an off-screen copy so the
+// visible card (possibly still fading out) keeps its content
+const measureCard = (location, marker) => {
+  const probe = popup.cloneNode(true);
+  probe.removeAttribute('id');
+  probe.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  probe.setAttribute('aria-hidden', 'true');
+  probe.classList.add('open');
+  probe.style.cssText = 'left: -9999px; top: 0; transition: none; pointer-events: none;';
+  fillPopup(probe, location, marker, false);
+  document.body.appendChild(probe);
+  const height = probe.offsetHeight;
+  probe.remove();
+  return height;
+};
+
+const openPopup = (location, marker, doPan = true) => {
+  cancelPendingRandom();
+  activeMarker?.getElement()?.classList.remove('marker-selected');
+  activeMarker = marker;
+  activeMarker.getElement()?.classList.add('marker-selected');
+
+  fillPopup(popup, location, marker);
 
   popup.classList.add('open');
   // Block pointer events briefly so the opening click doesn't immediately re-trigger
@@ -173,7 +200,8 @@ const openPopup = (location, marker, doPan = true) => {
 
   mapStatus.textContent = `Otwarto: ${location.title}`;
   setTimeout(() => { mapStatus.textContent = ''; }, 4000);
-  popup.focus();
+  // preventScroll: focusing something off-screen would otherwise scroll the map container
+  popup.focus({ preventScroll: true });
 };
 
 const closePopup = () => {
@@ -181,10 +209,11 @@ const closePopup = () => {
   const prevEl = activeMarker?.getElement();
   prevEl?.classList.remove('marker-selected');
   activeMarker = null;
-  setTimeout(() => prevEl?.focus(), 150);
+  setTimeout(() => prevEl?.focus({ preventScroll: true }), 150);
 };
 
 map.on('move',      repositionPopup);
+map.on('dragstart', cancelPendingRandom);
 map.on('zoomstart', () => { if (activeMarker) closePopup(); });
 
 document.addEventListener('keydown', e => {
@@ -369,12 +398,45 @@ const focusRandomLocation = () => {
     setTimeout(() => { mapStatus.textContent = ''; }, 4000);
     return;
   }
-  if (activeMarker) closePopup();
   const picked     = visible[Math.floor(Math.random() * visible.length)];
   const targetZoom = 15;
+  // The card opens above the marker, so put the marker below the centre by half the card
+  // plus the gap: the whole card is then on screen whatever its height or the viewport's
+  const lift       = measureCard(picked.location, picked) / 2 + 13;
   const projected  = map.project(picked.getLatLng(), targetZoom);
-  map.once('moveend', () => openPopup(picked.location, picked, false));
-  map.setView(map.unproject(projected.add([0, -85]), targetZoom), targetZoom, { animate: true, duration: 0.8 });
+  const target     = map.unproject(projected.add([0, -lift]), targetZoom);
+
+  if (activeMarker) closePopup();
+  const token = ++randomToken;
+
+  // Leaflet's 'moveend' is unreliable here: an animation cut short by setView fires it
+  // at once, and setView itself is dropped while a zoom animation runs. So watch the
+  // animation classes on the map pane instead, and open the card once they are gone.
+  const pane      = map.getPane('mapPane');
+  const zooming   = () => pane.classList.contains('leaflet-zoom-anim');
+  const animating = () => zooming() || pane.classList.contains('leaflet-pan-anim');
+  const markerInView = () => {
+    const p = map.latLngToContainerPoint(picked.getLatLng());
+    const s = map.getSize();
+    return p.x >= 0 && p.x <= s.x && p.y >= 0 && p.y <= s.y;
+  };
+  const deadline = Date.now() + 4000;
+  let launched = false;
+
+  const tick = () => {
+    if (token !== randomToken || Date.now() > deadline) return;
+    if (!launched) {
+      if (zooming()) { requestAnimationFrame(tick); return; }
+      launched = true;
+      map.setView(target, targetZoom, { animate: true, duration: 0.8 });
+      requestAnimationFrame(tick);
+      return;
+    }
+    if (animating()) { requestAnimationFrame(tick); return; }
+    // Not in view means the move was interrupted (e.g. a drag) — then no card
+    if (markerInView()) openPopup(picked.location, picked, false);
+  };
+  tick();
 };
 
 document.getElementById('random-btn').addEventListener('click', focusRandomLocation);
